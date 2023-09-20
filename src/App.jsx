@@ -1,9 +1,13 @@
 import PokemonCard from "./components/PokemonCard";
 import MyTitle from "./components/MyTitle";
 import NavBar from "./components/NavBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    alert("hello pokemon trainer :)");
+  }, []);
+
   const pokemonList = [
     {
       name: "bulbasaur",
@@ -31,16 +35,26 @@ function App() {
   ];
 
   const [pokemonIndex, setPokemonIndex] = useState(0);
+  const [currentPokemon, setCurrentPokemon] = useState(pokemonList[0]);
+
+  useEffect(() => {
+    if (currentPokemon.name === "pikachu") {
+      alert("pika pikachu !!!");
+    }
+  }, [currentPokemon]);
 
   const handleClick = (action) => {
     if (action === "précèdent") {
       setPokemonIndex(pokemonIndex - 1);
+      setCurrentPokemon(pokemonList[pokemonIndex - 1]);
     } else if (action === "suivant") {
       setPokemonIndex(pokemonIndex + 1);
+      setCurrentPokemon(pokemonList[pokemonIndex + 1]);
     }
   };
 
   const pokemon = pokemonList[pokemonIndex];
+
   return (
     <div>
       <MyTitle name="Pokédex" />
