@@ -29,3 +29,53 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
+
+.red {
+  background-color: red;
+}
+
+.red:hover {
+  transform: rotate(360deg);
+  transition: all 0.5s;
+  filter: drop-shadow(0 0 20px orange);
+}
+
+.blue {
+  background-color: blue;
+}
+
+.blue:hover {
+  transform: rotate(360deg);
+  transition: all 0.5s;
+  filter: drop-shadow(0 0 20px lightblue);
+}
+
+.green {
+  background-color: green;
+}
+
+.green:hover {
+  transform: rotate(360deg);
+  transition: all 0.5s;
+  filter: drop-shadow(0 0 20px lightgreen);
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.yellow:hover {
+  transform: rotate(360deg);
+  transition: all 0.5s;
+  filter: drop-shadow(0 0 20px lightgoldenrodyellow);
+}
+
+.black{
+  background-color: black;
+}
+
+.black:hover {
+  transform: rotate(360deg);
+  transition: all 0.5s;
+  filter: drop-shadow(0 0 20px white);
+}

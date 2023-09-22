@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+/* import { useEffect } from "react"; */
 const NavBar = ({ pokemonList, currentPokemon, onClick }) => {
-  useEffect(() => {
+/*   useEffect(() => {
     if (currentPokemon.name === "pikachu") {
       alert("pika pikachu !!!");
     }
-  }, [currentPokemon]);
+  }, [currentPokemon]); */
   return (
     <div className="navbar">
       {pokemonList.map((pokemon, index) => (

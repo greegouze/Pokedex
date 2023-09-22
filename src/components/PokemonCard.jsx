@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
 import styles from "./PokemonCard.module.css";
 
-function PokemonCard({ imgSrc, name }) {
+function PokemonCard({ imgSrc, name, background }) {
   PokemonCard.propTypes = {
     name: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
+    background: PropTypes.string.isRequired,
   };
 
   return (
     <div className={styles.container}>
-      <figure className={styles.card}>
+      <figure className={`${styles.card} ${styles[background]}`}>
         {imgSrc ? (
           <img src={imgSrc} alt={name} className={styles.cardImg} />
         ) : (
