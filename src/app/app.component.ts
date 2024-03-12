@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
-    <div>
-      <h1 class="text-3xl font-bold underline">Welcome to {{ title }}!</h1>
+    <main class="h-screen w-full">
+      <app-pokemon-list></app-pokemon-list>
       <router-outlet />
-    </div>
+    </main>
   `,
   styleUrl: './app.component.scss',
 })
