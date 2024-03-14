@@ -1,39 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PokemonBody } from '../models/pokemon.model';
+import { PokemonService } from '../services/pokemon.service';
 
 @Component({
   selector: 'app-pokemon-list',
   template: `
-    <div class="flex justify-center h-full w-full items-center">
+    <div class="h-full w-full bg-slate-900 flex flex-col gap-6 items-center">
+      <div class="w-full flex justify-center p-5">
+        <h1
+          class="font-black text-5xl text-orange-300 [text-shadow:_0_7px_0_rgb(0_0_0_/_40%)]">
+          Pokémon
+        </h1>
+      </div>
       <div
-        class="flex flex-col h-80 w-52 rounded-lg p-3 items-center shadow-lg"
-        [ngClass]="{ 'bg-emerald-600': pokemon.color === 'green' }"
-        *ngFor="let pokemon of pokemons">
-        <div class="my-3 text-white font-semibold text-xl">
-          <h2>{{ pokemon.name | uppercase }}</h2>
-        </div>
-        <div
-          class="mt-2 p-3 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%  h-44 w-36 flex items-center rounded-xl shadow-lg">
-          <img
-            class="h-28 w-28"
-            [src]="pokemon.imageSrc"
-            [alt]="pokemon.name" />
-        </div>
+        class="flex h-full w-[80%] max-w-[910px] p-2 flex-wrap gap-5 justify-center">
+        <app-pokemon-card
+          *ngFor="let pokemon of pokemons"
+          [pokemon]="pokemon"></app-pokemon-card>
       </div>
     </div>
   `,
-  styleUrl: './pokemon-list.component.scss',
 })
-export class PokemonListComponent {
-  pokemons: PokemonBody[] = [
-    {
-      id: 1,
-      name: 'Bulbizare',
-      imageSrc:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
-      color: 'green',
-    },
-  ];
+export class PokemonListComponent implements OnInit {
+  pokemons!: PokemonBody[];
 
-  constructor() {}
+  constructor(private pokemonService: PokemonService) {}
+
+  ngOnInit(): void {
+    this.pokemons = this.pokemonService.getAllPokemons();
+  }
 }

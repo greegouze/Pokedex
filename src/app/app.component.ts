@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
-    <main class="h-screen w-full">
+    <main class="h-screen w-screen">
       <app-pokemon-list></app-pokemon-list>
       <router-outlet />
     </main>
