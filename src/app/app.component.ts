@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <main class="h-screen w-screen">
-      <app-pokemon-list></app-pokemon-list>
+      <app-home></app-home>
       <router-outlet />
     </main>
   `,

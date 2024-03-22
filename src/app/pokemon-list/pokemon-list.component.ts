@@ -13,7 +13,7 @@ import { PokemonService } from '../services/pokemon.service';
         </h1>
       </div>
       <div
-        class="flex h-full w-[80%] max-w-[910px] p-2 flex-wrap gap-5 justify-center">
+        class="flex h-full w-[80%] max-w-[910px] p-2 gap-5 justify-center overflow-auto flex-wrap">
         <app-pokemon-card
           *ngFor="let pokemon of pokemons"
           [pokemon]="pokemon"></app-pokemon-card>
