@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { PokemonBody } from '../models/pokemon.model';
-import { PokemonService } from '../services/pokemon.service';
 
 @Component({
   selector: 'app-pokemon-card',
@@ -23,7 +22,5 @@ import { PokemonService } from '../services/pokemon.service';
   styleUrl: './pokemon-card.component.scss',
 })
 export class PokemonCardComponent {
-  constructor(private pokemonService: PokemonService) {}
-
   @Input() pokemon!: PokemonBody;
 }
