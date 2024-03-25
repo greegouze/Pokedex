@@ -14,6 +14,7 @@ export class PokemonService {
       backGround: '#059669',
       gradiand:
         'bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%',
+      description: 'cool',
     },
     {
       id: 2,
@@ -23,6 +24,7 @@ export class PokemonService {
       backGround: '#E11D48',
       gradiand:
         'bg-gradient-to-l from-red-500 from-10% via-orange-500 via-50% to-yellow-500 to-90%',
+      description: 'cool',
     },
     {
       id: 3,
@@ -32,6 +34,7 @@ export class PokemonService {
       backGround: '#59C3FF',
       gradiand:
         'bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%',
+      description: 'cool',
     },
     {
       id: 4,
@@ -41,10 +44,21 @@ export class PokemonService {
       backGround: '#FAD616',
       gradiand:
         'bg-gradient-to-l from-red-500 from-10% via-orange-500 via-50% to-yellow-500 to-90%',
+      description: 'cool',
     },
   ];
 
   getAllPokemons(): PokemonBody[] {
     return this.pokemons;
+  }
+
+  getPokemonById(pokemonId: number): PokemonBody {
+    const pokemon = this.pokemons.find(pokemon => pokemon.id === pokemonId);
+
+    if (!pokemon) {
+      throw new Error('Pokemon not found');
+    } else {
+      return pokemon;
+    }
   }
 }

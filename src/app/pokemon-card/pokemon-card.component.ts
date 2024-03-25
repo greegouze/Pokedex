@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { PokemonBody } from '../models/pokemon.model';
+import { PokemonService } from '../services/pokemon.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-card',
   template: `
     <div
-      class="flex flex-col h-80 w-52 rounded-lg p-3 items-center shadow-lg"
+      class="flex flex-col h-80 w-52 rounded-lg p-3 items-center shadow-lg hover:scale-105 duration-200"
       [style.backgroundColor]="pokemon.backGround">
       <div class="my-3 text-white font-semibold text-xl">
         <h2>{{ pokemon.name | uppercase }}</h2>
@@ -17,10 +19,29 @@ import { PokemonBody } from '../models/pokemon.model';
         [ngClass]="pokemon.gradiand">
         <img class="h-28 w-28" [src]="pokemon.imageSrc" [alt]="pokemon.name" />
       </div>
+      <div class="w-full mt-5  flex justify-center">
+        <button
+          class="cursor-pointer font-semibold text-white"
+          type="button"
+          (click)="onViewPokemon(pokemon.id)">
+          En savoir plus
+        </button>
+      </div>
     </div>
   `,
   styleUrl: './pokemon-card.component.scss',
 })
 export class PokemonCardComponent {
+  constructor(
+    public pokemonService: PokemonService,
+    private router: Router
+  ) {}
+
   @Input() pokemon!: PokemonBody;
+
+  onViewPokemon(value: number) {
+    const target = this.pokemonService.getPokemonById(value);
+    console.log(target);
+    this.router.navigateByUrl(`pokedex/${target.id}`);
+  }
 }

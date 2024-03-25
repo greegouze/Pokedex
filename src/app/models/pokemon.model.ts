@@ -4,4 +4,5 @@ export class PokemonBody {
   imageSrc!: string;
   backGround!: string;
   gradiand!: string;
+  description!: string;
 }
