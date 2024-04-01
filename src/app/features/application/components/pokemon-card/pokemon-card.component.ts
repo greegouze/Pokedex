@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { PokemonBody } from '../models/pokemon.model';
-import { PokemonService } from '../services/pokemon.service';
 import { Router } from '@angular/router';
+import { PokemonBody } from '../../models/pokemon.model';
+import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
   selector: 'app-pokemon-card',
