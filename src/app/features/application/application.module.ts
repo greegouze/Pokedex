@@ -7,6 +7,8 @@ import { PokemonListComponent } from './pages/pokemon-list/pokemon-list.componen
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ApplicationRouterModule } from './application-router.module';
+import { TypePipe } from './pipes/types.pipe';
+import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, ApplicationRouterModule],
@@ -16,6 +18,8 @@ import { ApplicationRouterModule } from './application-router.module';
     NavBarComponent,
     PokemonCardComponent,
     PokemonListComponent,
+    PokemonDetailsComponent,
+    TypePipe,
   ],
   providers: [],
 })
