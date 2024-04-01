@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { PokemonBody } from '../models/pokemon.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
+  constructor(private router: Router) {}
   pokemons: PokemonBody[] = [
     {
       id: 1,
@@ -52,13 +54,19 @@ export class PokemonService {
     return this.pokemons;
   }
 
-  getPokemonById(pokemonId: number): PokemonBody {
-    const pokemon = this.pokemons.find(pokemon => pokemon.id === pokemonId);
+  getPokemonById(pokemonId: number | string): PokemonBody {
+    const pokemon = this.pokemons.find(pokemon => pokemon.id == pokemonId);
 
     if (!pokemon) {
       throw new Error('Pokemon not found');
     } else {
       return pokemon;
     }
+  }
+
+  onViewPokemon(value: number) {
+    const target = this.getPokemonById(value);
+    console.log(target);
+    this.router.navigateByUrl(`pokedex/${target.id}`);
   }
 }

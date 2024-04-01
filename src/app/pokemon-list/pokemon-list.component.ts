@@ -5,7 +5,7 @@ import { PokemonService } from '../services/pokemon.service';
 @Component({
   selector: 'app-pokemon-list',
   template: `
-    <div class="w-full flex flex-col gap-6 items-center ov">
+    <div class="w-full h-full flex flex-col gap-6 items-center">
       <!-- <h1
           class="font-black text-5xl text-orange-300 [text-shadow:_0_7px_0_rgb(0_0_0_/_40%)]">
           Pokémon
@@ -18,7 +18,7 @@ import { PokemonService } from '../services/pokemon.service';
       </div>
 
       <div
-        class="flex h-[600px] w-[80%] max-w-[910px] gap-5 justify-center overflow-auto flex-wrap mt-2 p-4">
+        class="flex full w-[80%] max-w-[910px] gap-5 justify-center overflow-auto flex-wrap mt-2 p-4">
         <app-pokemon-card
           *ngFor="let pokemon of pokemons"
           [pokemon]="pokemon"></app-pokemon-card>

@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-nav-bar',
   template: `
-    <header class="p-4">
-      <nav class="bg-cyan-900 w-full p-4 rounded-full shadow-md">
+    <header>
+      <nav class="bg-cyan-900 w-full p-4 shadow-md">
         <div class="flex justify-around font-bold text-white">
           <a
             class="hover:text-yellow-400"
