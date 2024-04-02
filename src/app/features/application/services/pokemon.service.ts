@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { PokemonBody } from '../models/pokemon.model';
 import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PokemonService {
   constructor(private router: Router) {}
   pokemons: PokemonBody[] = [
@@ -16,7 +14,7 @@ export class PokemonService {
       gradiand:
         'bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%',
       description: 'cool',
-      type: 'Plante',
+      types: ['Plante'],
     },
     {
       id: 2,
@@ -26,7 +24,7 @@ export class PokemonService {
       gradiand:
         'bg-gradient-to-l from-red-500 from-10% via-orange-500 via-50% to-yellow-500 to-90%',
       description: 'cool',
-      type: 'Feu',
+      types: ['Feu'],
     },
     {
       id: 3,
@@ -36,7 +34,7 @@ export class PokemonService {
       gradiand:
         'bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%',
       description: 'cool',
-      type: 'Eau',
+      types: ['Eau'],
     },
     {
       id: 4,
@@ -46,7 +44,7 @@ export class PokemonService {
       gradiand:
         'bg-gradient-to-l from-red-500 from-10% via-orange-500 via-50% to-yellow-500 to-90%',
       description: 'cool',
-      type: 'Electricity',
+      types: ['Electrik'],
     },
   ];
 
@@ -68,5 +66,9 @@ export class PokemonService {
     const target = this.getPokemonById(value);
     console.log(target);
     this.router.navigateByUrl(`pokedex/${target.id}`);
+  }
+
+  getPokemonListType(): string[] {
+    return ['Plante', 'Feu', 'Eau', 'Electrik'];
   }
 }

@@ -4,22 +4,20 @@ import { Component } from '@angular/core';
   selector: 'app-nav-bar',
   template: `
     <header>
-      <nav class="bg-cyan-900 w-full p-4 shadow-md">
-        <div class="flex justify-around font-bold text-white">
-          <a
-            class="hover:text-yellow-400"
-            [routerLink]="['/']"
-            routerLinkActive="text-yellow-400"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >Home</a
-          >
-          <a
-            class="hover:text-yellow-400"
-            [routerLink]="['/pokedex']"
-            routerLinkActive="text-yellow-400"
-            >Pokedex</a
-          >
-          <a class="hover:text-yellow-400">Ajouter</a>
+      <nav class="bg-cyan-900 w-full p-5 shadow-md">
+        <div class="flex font-bold text-white px-2">
+          <div class="w-[62%] flex justify-end">
+            <a
+              class="hover:text-yellow-400 text-3xl"
+              [routerLink]="['/pokedex']"
+              routerLinkActive="text-yellow-400"
+              [routerLinkActiveOptions]="{ exact: true }"
+              >Pokedex</a
+            >
+          </div>
+          <div class="w-1/2 flex justify-end">
+            <a class="hover:text-yellow-400">Ajouter +</a>
+          </div>
         </div>
       </nav>
     </header>

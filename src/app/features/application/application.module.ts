@@ -9,18 +9,22 @@ import { HomeComponent } from './pages/home/home.component';
 import { ApplicationRouterModule } from './application-router.module';
 import { TypePipe } from './pipes/types.pipe';
 import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
+import { PokemonService } from './services/pokemon.service';
+import { FormsModule } from '@angular/forms';
+import { PokemonFormComponent } from './pages/pokemon-form/pokemon-form.component';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ApplicationRouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, ApplicationRouterModule],
   declarations: [
     AppComponent,
-    HomeComponent,
     NavBarComponent,
-    PokemonCardComponent,
+    HomeComponent,
     PokemonListComponent,
+    PokemonCardComponent,
     PokemonDetailsComponent,
+    PokemonFormComponent,
     TypePipe,
   ],
-  providers: [],
+  providers: [PokemonService],
 })
 export class ApplicationModule {}

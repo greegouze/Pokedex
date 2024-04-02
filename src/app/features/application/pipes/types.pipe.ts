@@ -14,7 +14,7 @@ export class TypePipe implements PipeTransform {
       case 'Eau':
         color = 'blue';
         break;
-      case 'Electricity':
+      case 'Electrik':
         color = '#FAD616';
         break;
       case 'Plante':

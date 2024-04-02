@@ -17,18 +17,18 @@ import { PokemonBody } from '../../models/pokemon.model';
       <div
         class=" flex h-[700px] w-[80%] max-w-[910px] gap-5 justify-center overflow-auto flex-wrap mt-2 p-4">
         <app-pokemon-card
-          *ngFor="let pokemon of pokemons"
+          *ngFor="let pokemon of pokemonsList"
           [pokemon]="pokemon"></app-pokemon-card>
       </div>
     </div>
   `,
 })
 export class PokemonListComponent implements OnInit {
-  pokemons!: PokemonBody[];
+  pokemonsList!: PokemonBody[];
 
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    this.pokemons = this.pokemonService.getAllPokemons();
+    this.pokemonsList = this.pokemonService.getAllPokemons();
   }
 }

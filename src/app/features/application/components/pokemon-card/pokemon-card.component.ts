@@ -8,7 +8,7 @@ import { PokemonService } from '../../services/pokemon.service';
   template: `
     <div
       class="flex flex-col h-80 w-52 rounded-lg p-3 items-center shadow-lg hover:scale-105 duration-200"
-      [style.backgroundColor]="pokemon.type | type">
+      [style.backgroundColor]="pokemon.types[0] | type">
       <div class="my-3 text-white font-semibold text-xl">
         <h2>{{ pokemon.name | uppercase }}</h2>
       </div>

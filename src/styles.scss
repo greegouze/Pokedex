@@ -5,14 +5,14 @@
 
 @layer base {
     ::-webkit-scrollbar {
-        width: 5px;
+        width: 0px;
       }
       ::-webkit-scrollbar-track {
         background: transparent;
         border-radius: 5px;
       }
       ::-webkit-scrollbar-thumb {
-        background-color: yellow;
+        background-color: transparent;
         border-radius: 5px;
       }
 }
