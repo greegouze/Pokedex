@@ -23,7 +23,7 @@ import { PokemonService } from '../../services/pokemon.service';
         <button
           class="cursor-pointer font-semibold text-white"
           type="button"
-          (click)="onViewPokemon(pokemon.id)">
+          (click)="onViewPokemonEdit(pokemon.id)">
           En savoir plus
         </button>
       </div>
@@ -39,9 +39,9 @@ export class PokemonCardComponent {
 
   @Input() pokemon!: PokemonBody;
 
-  onViewPokemon(value: number) {
+  onViewPokemonEdit(value: number) {
     const target = this.pokemonService.getPokemonById(value);
     console.log(target);
-    this.router.navigateByUrl(`pokedex/${target.id}`);
+    this.router.navigateByUrl(`pokedex/${target.id}/edit`);
   }
 }

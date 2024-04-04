@@ -19,7 +19,7 @@ const routes: Routes = [
         component: PokemonDetailsComponent,
       },
       {
-        path: 'test',
+        path: 'pokedex/:id/edit',
         component: PokemonFormComponent,
       },
     ],

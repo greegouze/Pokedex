@@ -10,11 +10,16 @@ import { ApplicationRouterModule } from './application-router.module';
 import { TypePipe } from './pipes/types.pipe';
 import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
 import { PokemonService } from './services/pokemon.service';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PokemonFormComponent } from './pages/pokemon-form/pokemon-form.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, RouterModule, ApplicationRouterModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    ApplicationRouterModule,
+  ],
   declarations: [
     AppComponent,
     NavBarComponent,
