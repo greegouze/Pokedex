@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PokemonBody } from '../../models/pokemon.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-form',
@@ -11,9 +12,12 @@ import { FormBuilder, Validators } from '@angular/forms';
       #formEdit="ngForm"
       [formGroup]="pokemonFormEdit"
       (ngSubmit)="onSubmit()"
+      *ngIf="this.pokemon"
       class="h-[500px] w-[700px] p-3 rounded-md bg-slate-700">
       <div class="flex h-full w-full p-2">
-        <div class="h-full w-1/2 p-4 border-2 rounded-md shadow-lg">
+        <div
+          class="h-full w-1/2 p-4 border-2 rounded-md shadow-lg"
+          [style.backgroundColor]="pokemon.types[0] | type">
           <p>Form submitted ? {{ formEdit.submitted }}</p>
           <p>Form valid ? {{ formEdit.valid }}</p>
           <p>Form invalid ? {{ formEdit.invalid }}</p>
@@ -22,41 +26,85 @@ import { FormBuilder, Validators } from '@angular/forms';
 
         <div class="h-full w-1/2 p-4 flex flex-col gap-6">
           <fieldset class="flex flex-col gap-2">
-            <label for="name">Name : </label>
-            <input type="text" formControlName="name" />
+            <label class="text-white" for="name">Name : </label>
+            <input id="name" type="text" formControlName="name" />
+
             <div
-              class="text-rose-700"
-              *ngIf="pokemonFormEdit.controls.name.errors">
-              <span *ngIf="pokemonFormEdit.controls.name.errors?.['required']"
+              class="text-rose-200"
+              *ngIf="pokemonFormEdit.controls['name'].errors">
+              <span
+                *ngIf="pokemonFormEdit.controls['name'].errors?.['required']"
                 >Ce champs est obligatoire *</span
+              >
+              <span
+                *ngIf="pokemonFormEdit.controls['name'].errors?.['maxlength']"
+                >Le nom doit contenir 15 caractères maximum *</span
               >
             </div>
           </fieldset>
 
           <fieldset class="flex flex-col">
-            <label for="">Description : </label>
-            <input type="text" formControlName="description" />
+            <label class="text-white" for="">Description : </label>
+            <textarea
+              class="resize-none"
+              formControlName="description"></textarea>
+
+            <div
+              class="text-rose-200"
+              *ngIf="pokemonFormEdit.controls['description'].errors">
+              <span
+                *ngIf="
+                  pokemonFormEdit.controls['description'].errors?.['required']
+                "
+                >Ce champs est obligatoire *</span
+              >
+              <span
+                *ngIf="
+                  pokemonFormEdit.controls['description'].errors?.['maxlength']
+                "
+                >La description est trop longue *</span
+              >
+            </div>
           </fieldset>
 
-          <fieldset class="flex flex-col">
-            <label for=""> Type : </label>
-            <select name="" id="" formControlName="types">
-              <option
-                [style.color]="pokemonType | type"
-                *ngFor="let pokemonType of pokemonService.getPokemonListType()"
-                value="{{ pokemonType }}">
-                {{ pokemonType }}
-              </option>
-            </select>
+          <fieldset formArrayName="types" class="h-full w-full">
+            <div
+              class="max-h-15 w-full py-2 bg-slate-500 overflow-auto flex gap-2 flex-wrap justify-center">
+              <div
+                *ngFor="let type of types; let i = index"
+                class="border-2 px-2 rounded-md text-white"
+                [style.backgroundColor]="type | type"
+                [class.opacity-50]="checkbox.checked">
+                <input
+                  #checkbox
+                  class="hidden"
+                  type="checkbox"
+                  id="{{ type }}"
+                  [value]="type"
+                  [checked]="hasType(type)"
+                  (change)="selectType($event, type)" />
+                <label for="{{ type }}">{{ type }}</label>
+              </div>
+            </div>
+
+            <div
+              class="text-rose-200"
+              *ngIf="pokemonFormEdit.controls['types'].errors">
+              <span
+                *ngIf="pokemonFormEdit.controls['types'].errors?.['required']"
+                >Ce champs est obligatoire *</span
+              >
+            </div>
           </fieldset>
 
-          <div class="flex gap-6">
-            <button class="ring-2 rounded-sm py-1 px-2 text-white">
+          <div class="flex gap-6 justify-center">
+            <button class="ring-2 rounded-sm py-1 px-2 text-white w-full">
               Retour
             </button>
             <button
+              [disabled]="!formEdit.valid"
               type="submit"
-              class="ring-2 rounded-sm py-1 px-2 text-white">
+              class="ring-2 rounded-sm py-1 px-2 text-white w-full disabled:opacity-50">
               Valider
             </button>
           </div>
@@ -66,8 +114,9 @@ import { FormBuilder, Validators } from '@angular/forms';
   </div> `,
   styleUrl: './pokemon-form.component.scss',
 })
-export class PokemonFormComponent implements OnInit {
+export class PokemonFormComponent implements OnInit, OnDestroy {
   @Input() pokemon!: PokemonBody;
+  pokemonFormEdit!: FormGroup;
   types!: string[];
 
   constructor(
@@ -77,17 +126,40 @@ export class PokemonFormComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  pokemonFormEdit = this.formBuilder.group({
-    name: ['', Validators.required],
-    description: '',
-    types: '',
-  });
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.types = this.pokemonService.getPokemonListType();
 
     const pokemonId = this.route.snapshot.paramMap.get('id');
     if (pokemonId) this.pokemon = this.pokemonService.getPokemonById(pokemonId);
+
+    this.pokemonFormEdit = this.formBuilder.group({
+      name: [
+        this.pokemon.name,
+        [Validators.required, Validators.maxLength(15)],
+      ],
+      description: [
+        this.pokemon.description,
+        [Validators.required, Validators.maxLength(255)],
+      ],
+      types: [
+        this.formBuilder.array(
+          this.pokemon.types.map(type => this.formBuilder.control(type))
+        ),
+        Validators.required,
+      ],
+    });
+
+    this.pokemonFormEdit
+      .get('name')
+      ?.valueChanges.pipe(
+        tap(value => {
+          this.pokemon.name = value;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   hasType(type: string): boolean {
@@ -107,6 +179,13 @@ export class PokemonFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Ok !', this.pokemonFormEdit.value);
+    console.log(this.pokemonFormEdit.value);
+
+    this.router.navigateByUrl('/');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

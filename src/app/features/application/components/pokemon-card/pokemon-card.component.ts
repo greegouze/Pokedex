@@ -19,6 +19,7 @@ import { PokemonService } from '../../services/pokemon.service';
         [ngClass]="pokemon.gradiand">
         <img class="h-28 w-28" [src]="pokemon.imageSrc" [alt]="pokemon.name" />
       </div>
+      <p>{{ pokemon.types }}</p>
       <div class="w-full mt-5  flex justify-center">
         <button
           class="cursor-pointer font-semibold text-white"

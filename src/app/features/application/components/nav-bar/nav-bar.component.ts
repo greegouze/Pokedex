@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
           <div class="w-[62%] flex justify-end">
             <a
               class="hover:text-yellow-400 text-3xl"
-              [routerLink]="['/pokedex']"
+              [routerLink]="['/']"
               routerLinkActive="text-yellow-400"
               [routerLinkActiveOptions]="{ exact: true }"
               >Pokedex</a
