@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  AfterContentChecked,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { PokemonBody } from '../../models/pokemon.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
@@ -72,9 +79,9 @@ import { Subject, takeUntil, tap } from 'rxjs';
               class="max-h-15 w-full py-2 bg-slate-500 overflow-auto flex gap-2 flex-wrap justify-center">
               <div
                 *ngFor="let type of types; let i = index"
-                class="border-2 px-2 rounded-md text-white"
+                class="border-2 px-2 rounded-md text-white hover:scale-105 duration-200"
                 [style.backgroundColor]="type | type"
-                [class.opacity-50]="checkbox.checked">
+                [class.opacity-50]="checkbox?.checked">
                 <input
                   #checkbox
                   class="hidden"
@@ -114,7 +121,9 @@ import { Subject, takeUntil, tap } from 'rxjs';
   </div> `,
   styleUrl: './pokemon-form.component.scss',
 })
-export class PokemonFormComponent implements OnInit, OnDestroy {
+export class PokemonFormComponent
+  implements OnInit, AfterContentChecked, OnDestroy
+{
   @Input() pokemon!: PokemonBody;
   pokemonFormEdit!: FormGroup;
   types!: string[];
@@ -123,10 +132,12 @@ export class PokemonFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     protected pokemonService: PokemonService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private changeDetector: ChangeDetectorRef
   ) {}
 
-  private destroy$ = new Subject<void>();
+  private destroy = new Subject<void>();
+  private destroy$ = this.destroy.asObservable();
 
   ngOnInit(): void {
     this.types = this.pokemonService.getPokemonListType();
@@ -162,6 +173,10 @@ export class PokemonFormComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
+  }
+
   hasType(type: string): boolean {
     return this.pokemon.types.includes(type);
   }
@@ -180,12 +195,11 @@ export class PokemonFormComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     console.log(this.pokemonFormEdit.value);
-
     this.router.navigateByUrl('/');
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.destroy.next();
+    this.destroy.complete();
   }
 }
