@@ -22,10 +22,19 @@ import { PokemonService } from '../../services/pokemon.service';
       <p>{{ pokemon.types }}</p>
       <div class="w-full mt-5  flex justify-center">
         <button
+          *ngIf="!router.isActive('/pokedex/' + pokemon.id, true)"
+          class="cursor-pointer font-semibold text-white"
+          type="button"
+          (click)="pokemonService.onViewPokemon(pokemon.id)">
+          En savoir plus
+        </button>
+
+        <button
+          *ngIf="router.isActive('/pokedex/' + pokemon.id, true)"
           class="cursor-pointer font-semibold text-white"
           type="button"
           (click)="onViewPokemonEdit(pokemon.id)">
-          En savoir plus
+          Modifier
         </button>
       </div>
     </div>
@@ -33,14 +42,13 @@ import { PokemonService } from '../../services/pokemon.service';
   styleUrl: './pokemon-card.component.scss',
 })
 export class PokemonCardComponent {
+  @Input() pokemon!: PokemonBody;
   constructor(
     public pokemonService: PokemonService,
-    private router: Router
+    protected router: Router
   ) {}
 
-  @Input() pokemon!: PokemonBody;
-
-  onViewPokemonEdit(value: number) {
+  protected onViewPokemonEdit(value: number) {
     const target = this.pokemonService.getPokemonById(value);
     console.log(target);
     this.router.navigateByUrl(`pokedex/${target.id}/edit`);

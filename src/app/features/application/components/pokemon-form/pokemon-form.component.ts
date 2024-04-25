@@ -1,16 +1,10 @@
-import {
-  ChangeDetectorRef,
-  AfterContentChecked,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PokemonBody } from '../../models/pokemon.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
+import { maxTypeValidator } from '../../validators/max-type-validator';
 
 @Component({
   selector: 'app-pokemon-form',
@@ -81,25 +75,35 @@ import { Subject, takeUntil, tap } from 'rxjs';
                 *ngFor="let type of types; let i = index"
                 class="border-2 px-2 rounded-md text-white hover:scale-105 duration-200"
                 [style.backgroundColor]="type | type"
-                [class.opacity-50]="checkbox?.checked">
+                [ngClass]="{
+                  'opacity-30': hasType(type) === true
+                }">
                 <input
                   #checkbox
                   class="hidden"
                   type="checkbox"
-                  id="{{ type }}"
+                  [id]="type"
                   [value]="type"
                   [checked]="hasType(type)"
-                  (change)="selectType($event, type)" />
-                <label for="{{ type }}">{{ type }}</label>
+                  (change)="selectType($event, type)"
+                  [disabled]="
+                    pokemonFormEdit.get('types')?.errors?.['tooMany'] &&
+                    !hasType(type)
+                  " />
+                <label [htmlFor]="type">{{ type }}</label>
               </div>
             </div>
 
             <div
               class="text-rose-200"
-              *ngIf="pokemonFormEdit.controls['types'].errors">
+              *ngIf="pokemonFormEdit.controls['types']?.errors">
+              <span *ngIf="pokemonFormEdit.get('types')?.errors?.['tooMany']">
+                Vous avez sélectionné trop de types. Maximum attendu :
+                {{ pokemonFormEdit.get('types')?.errors?.['tooMany'].expected }}
+              </span>
               <span
                 *ngIf="pokemonFormEdit.controls['types'].errors?.['required']"
-                >Ce champs est obligatoire *</span
+                >Le pokemon doit contenir au moins 1 type *</span
               >
             </div>
           </fieldset>
@@ -121,27 +125,22 @@ import { Subject, takeUntil, tap } from 'rxjs';
   </div> `,
   styleUrl: './pokemon-form.component.scss',
 })
-export class PokemonFormComponent
-  implements OnInit, AfterContentChecked, OnDestroy
-{
+export class PokemonFormComponent implements OnInit, OnDestroy {
   @Input() pokemon!: PokemonBody;
+
   pokemonFormEdit!: FormGroup;
   types!: string[];
+
+  private destroy = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
     protected pokemonService: PokemonService,
     private router: Router,
-    private formBuilder: FormBuilder,
-    private changeDetector: ChangeDetectorRef
+    private formBuilder: FormBuilder
   ) {}
 
-  private destroy = new Subject<void>();
-  private destroy$ = this.destroy.asObservable();
-
   ngOnInit(): void {
-    this.types = this.pokemonService.getPokemonListType();
-
     const pokemonId = this.route.snapshot.paramMap.get('id');
     if (pokemonId) this.pokemon = this.pokemonService.getPokemonById(pokemonId);
 
@@ -154,13 +153,13 @@ export class PokemonFormComponent
         this.pokemon.description,
         [Validators.required, Validators.maxLength(255)],
       ],
-      types: [
-        this.formBuilder.array(
-          this.pokemon.types.map(type => this.formBuilder.control(type))
-        ),
-        Validators.required,
-      ],
+      types: this.formBuilder.array(
+        this.pokemon.types.map(type => this.formBuilder.control(type)),
+        [Validators.required, maxTypeValidator()]
+      ),
     });
+
+    this.types = this.pokemonService.getPokemonListType();
 
     this.pokemonFormEdit
       .get('name')
@@ -168,13 +167,9 @@ export class PokemonFormComponent
         tap(value => {
           this.pokemon.name = value;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy)
       )
       .subscribe();
-  }
-
-  ngAfterContentChecked(): void {
-    this.changeDetector.detectChanges();
   }
 
   hasType(type: string): boolean {
@@ -182,14 +177,16 @@ export class PokemonFormComponent
   }
 
   selectType($event: Event, type: string) {
-    //1 Vérifier si ma case est coché
     const isChecked: boolean = ($event.target as HTMLInputElement).checked;
-    //2 Si coché je push le nouveau type à mon pokemon
+    const typesControl = this.pokemonFormEdit.get('types') as FormArray;
+
     if (isChecked) {
       this.pokemon.types.push(type);
+      typesControl.push(this.formBuilder.control(type));
     } else {
       const index = this.pokemon.types.indexOf(type);
       this.pokemon.types.splice(index, 1);
+      typesControl.removeAt(index);
     }
   }
 

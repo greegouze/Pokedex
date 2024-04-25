@@ -3,8 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './pages/app/app.component';
 import { PokemonListComponent } from './pages/pokemon-list/pokemon-list.component';
 import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
-import { PokemonFormComponent } from './pages/pokemon-form/pokemon-form.component';
-
+import { PokemonEditComponent } from './pages/pokemon-edit/pokemon-edit.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: 'pokedex/:id/edit',
-        component: PokemonFormComponent,
+        component: PokemonEditComponent,
       },
     ],
   },

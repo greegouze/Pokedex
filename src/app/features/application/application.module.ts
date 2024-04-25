@@ -8,11 +8,11 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ApplicationRouterModule } from './application-router.module';
 import { TypePipe } from './pipes/types.pipe';
-import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
 import { PokemonService } from './services/pokemon.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PokemonFormComponent } from './pages/pokemon-form/pokemon-form.component';
-
+import { PokemonFormComponent } from './components/pokemon-form/pokemon-form.component';
+import { PokemonEditComponent } from './pages/pokemon-edit/pokemon-edit.component';
+import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -28,6 +28,7 @@ import { PokemonFormComponent } from './pages/pokemon-form/pokemon-form.componen
     PokemonCardComponent,
     PokemonDetailsComponent,
     PokemonFormComponent,
+    PokemonEditComponent,
     TypePipe,
   ],
   providers: [PokemonService],
