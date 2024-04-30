@@ -19,7 +19,10 @@ import { PokemonService } from '../../services/pokemon.service';
         [ngClass]="pokemon.gradiand">
         <img class="h-28 w-28" [src]="pokemon.imageSrc" [alt]="pokemon.name" />
       </div>
-      <p>{{ pokemon.types }}</p>
+      <div
+        class="w-[60%] flex justify-center py-1 font-bold mt-2  rounded-md text-white">
+        <h3>{{ pokemon.types }}</h3>
+      </div>
       <div class="w-full mt-5  flex justify-center">
         <button
           *ngIf="!router.isActive('/pokedex/' + pokemon.id, true)"
@@ -50,7 +53,6 @@ export class PokemonCardComponent {
 
   protected onViewPokemonEdit(value: number) {
     const target = this.pokemonService.getPokemonById(value);
-    console.log(target);
     this.router.navigateByUrl(`pokedex/${target.id}/edit`);
   }
 }

@@ -4,6 +4,7 @@ import { AppComponent } from './pages/app/app.component';
 import { PokemonListComponent } from './pages/pokemon-list/pokemon-list.component';
 import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
 import { PokemonEditComponent } from './pages/pokemon-edit/pokemon-edit.component';
+import { PokemonAddComponent } from './pages/pokemon-add/pokemon-add.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: 'pokedex/:id/edit',
         component: PokemonEditComponent,
+      },
+      {
+        path: 'add',
+        component: PokemonAddComponent,
       },
     ],
   },

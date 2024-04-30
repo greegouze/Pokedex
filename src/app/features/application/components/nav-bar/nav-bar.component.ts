@@ -16,7 +16,12 @@ import { Component } from '@angular/core';
             >
           </div>
           <div class="w-1/2 flex justify-end">
-            <a class="hover:text-yellow-400">Ajouter +</a>
+            <a
+              [routerLink]="['/add']"
+              routerLinkActive="text-yellow-400"
+              class="hover:text-yellow-400"
+              >Ajouter +</a
+            >
           </div>
         </div>
       </nav>

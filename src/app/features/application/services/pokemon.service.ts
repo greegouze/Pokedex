@@ -64,11 +64,36 @@ export class PokemonService {
 
   onViewPokemon(value: number) {
     const target = this.getPokemonById(value);
-    console.log(target);
     this.router.navigateByUrl(`pokedex/${target.id}`);
   }
 
   getPokemonListType(): string[] {
     return ['Plante', 'Feu', 'Eau', 'Electrik'];
+  }
+
+  addPokemon(pokemon: PokemonBody) {
+    // Générer un nouvel ID pour le Pokémon
+    const newId = this.pokemons.length + 1;
+    pokemon.id = newId;
+
+    if (!pokemon.imageSrc) {
+      pokemon.imageSrc =
+        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png';
+    }
+
+    // Ajouter le nouveau Pokémon à la liste
+    this.pokemons.push(pokemon);
+  }
+
+  updatePokemon(updatedPokemon: PokemonBody) {
+    const index = this.pokemons.findIndex(
+      pokemon => pokemon.id === updatedPokemon.id
+    );
+
+    if (index !== -1) {
+      this.pokemons[index] = { ...this.pokemons[index], ...updatedPokemon };
+    } else {
+      throw new Error('Pokemon not found');
+    }
   }
 }

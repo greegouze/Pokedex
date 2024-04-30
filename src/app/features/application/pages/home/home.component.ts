@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
     const pokemons: PokemonBody =
       this.pokemonServices.getPokemonById(pokemonId);
     if (pokemons) {
-      console.log(`vous  avez cliqué sur ${pokemons.name}`);
       this.pokemonSelected = pokemons;
     } else {
       this.pokemonSelected = pokemons;

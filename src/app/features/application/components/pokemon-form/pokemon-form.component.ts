@@ -13,15 +13,14 @@ import { maxTypeValidator } from '../../validators/max-type-validator';
       #formEdit="ngForm"
       [formGroup]="pokemonFormEdit"
       (ngSubmit)="onSubmit()"
-      *ngIf="this.pokemon"
       class="h-[500px] w-[700px] p-3 rounded-md bg-slate-700">
       <div class="flex h-full w-full p-2">
         <div
-          class="h-full w-1/2 p-4 border-2 rounded-md shadow-lg"
+          class="h-full w-1/2 p-4 border-2 rounded-md shadow-lg flex items-center"
           [style.backgroundColor]="pokemon.types[0] | type">
-          <p>Form submitted ? {{ formEdit.submitted }}</p>
+          <!-- <p>Form submitted ? {{ formEdit.submitted }}</p>
           <p>Form valid ? {{ formEdit.valid }}</p>
-          <p>Form invalid ? {{ formEdit.invalid }}</p>
+          <p>Form invalid ? {{ formEdit.invalid }}</p> -->
           <img [src]="pokemon.imageSrc" class="h-64" alt="" />
         </div>
 
@@ -127,6 +126,7 @@ import { maxTypeValidator } from '../../validators/max-type-validator';
 })
 export class PokemonFormComponent implements OnInit, OnDestroy {
   @Input() pokemon!: PokemonBody;
+  @Input() isAdding!: boolean;
 
   pokemonFormEdit!: FormGroup;
   types!: string[];
@@ -142,9 +142,22 @@ export class PokemonFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const pokemonId = this.route.snapshot.paramMap.get('id');
-    if (pokemonId) this.pokemon = this.pokemonService.getPokemonById(pokemonId);
+    if (!pokemonId) {
+      this.pokemon = {
+        id: 6,
+        name: '',
+        description: '',
+        types: [],
+        gradiand: '',
+        imageSrc:
+          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
+      };
+    } else {
+      this.pokemon = this.pokemonService.getPokemonById(pokemonId);
+    }
 
     this.pokemonFormEdit = this.formBuilder.group({
+      id: this.pokemon.id,
       name: [
         this.pokemon.name,
         [Validators.required, Validators.maxLength(15)],
@@ -191,7 +204,12 @@ export class PokemonFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.pokemonFormEdit.value);
+    if (this.isAdding) {
+      this.pokemonService.addPokemon(this.pokemonFormEdit.value);
+    } else {
+      this.pokemonService.updatePokemon(this.pokemonFormEdit.value);
+    }
+
     this.router.navigateByUrl('/');
   }
 

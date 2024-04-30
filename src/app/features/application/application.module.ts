@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PokemonFormComponent } from './components/pokemon-form/pokemon-form.component';
 import { PokemonEditComponent } from './pages/pokemon-edit/pokemon-edit.component';
 import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details.component';
+import { PokemonAddComponent } from './pages/pokemon-add/pokemon-add.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,6 +30,7 @@ import { PokemonDetailsComponent } from './pages/pokemon-details/pokemon-details
     PokemonDetailsComponent,
     PokemonFormComponent,
     PokemonEditComponent,
+    PokemonAddComponent,
     TypePipe,
   ],
   providers: [PokemonService],
